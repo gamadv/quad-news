@@ -22,9 +22,8 @@ export async function query(props: QueryProps) {
     password: POSTGRES_PASSWORD,
   });
 
-  await client.connect();
-
   try {
+    await client.connect();
     const result = await client.query(queryTextOrConfig, values);
     return result;
   } catch (error) {

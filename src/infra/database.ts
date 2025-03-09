@@ -5,6 +5,7 @@ import {
   POSTGRES_USER,
   POSTGRES_DB,
   POSTGRES_PASSWORD,
+  isSSLEnabled,
 } from "./envConfig";
 
 interface QueryProps {
@@ -20,6 +21,7 @@ export async function query(props: QueryProps) {
     user: POSTGRES_USER,
     database: POSTGRES_DB,
     password: POSTGRES_PASSWORD,
+    ssl: isSSLEnabled,
   });
 
   try {

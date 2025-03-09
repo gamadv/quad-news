@@ -1,5 +1,5 @@
 describe("Status", () => {
-  const pgBaseVersion = "16.0";
+  const pgBaseVersion = "16.8";
 
   it("GET status should be return 200", async () => {
     const response = await fetch("http://localhost:3000/api/v1/status");

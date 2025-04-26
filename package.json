@@ -19,6 +19,8 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "dotenv": "^16.4.7",
+    "dotenv-expand": "^12.0.2",
     "next": "^15.1.7",
     "pg": "^8.13.3",
     "react": "^18.3.1",

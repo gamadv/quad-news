@@ -1,7 +1,8 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import migrationRunner, { RunnerOption } from "node-pg-migrate";
-import { join } from "node:path";
+import { join, resolve } from "node:path";
 import database from "src/infra/database";
+import { isProdEnv } from "src/infra/envConfig";
 
 export default async function migrations(
   request: NextApiRequest,
@@ -9,10 +10,18 @@ export default async function migrations(
 ) {
   const dbClient = await database.getNewClient();
 
+  const parsePathAccordingEnv = () => {
+    if (isProdEnv) {
+      return resolve("src", "infra", "migrations");
+    }
+
+    return join("src", "infra", "migrations");
+  };
+
   const defaultMigrationOptions: RunnerOption = {
     dbClient: dbClient,
     dryRun: true,
-    dir: join("src", "infra", "migrations"),
+    dir: parsePathAccordingEnv(),
     direction: "up",
     verbose: true,
     migrationsTable: "pgmigrations",

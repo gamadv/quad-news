@@ -12,8 +12,10 @@
     "lintcheck": "prettier --check .",
     "lintfix": "prettier --write .",
     "typecheck": "tsc --noEmit",
-    "test": "jest",
-    "testwatch": "jest --watchAll"
+    "test": "jest --runInBand",
+    "testwatch": "jest --watchAll --runInBand",
+    "migration:create": "node-pg-migrate -m src/infra/migrations create",
+    "migration:up": "node-pg-migrate -m src/infra/migrations --envPath .env.development up"
   },
   "keywords": [],
   "author": "",

@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { query } from "src/infra/database";
+import db from "src/infra/database";
 import { POSTGRES_DB } from "src/infra/envConfig";
 
 const databaseName = POSTGRES_DB;
@@ -10,13 +10,14 @@ export default async function Status(
 ) {
   const currentTime = new Date().toISOString();
 
-  const getPostgresVersion = await query({
+  const getPostgresVersion = await db.query({
     queryTextOrConfig: "SHOW server_version;",
   });
-  const getMaxConnections = await query({
+  const getMaxConnections = await db.query({
     queryTextOrConfig: "SHOW max_connections;",
   });
-  const getCurrentConnections = await query({
+
+  const getCurrentConnections = await db.query({
     queryTextOrConfig:
       "SELECT count(*)::int FROM pg_stat_activity WHERE datname = $1;",
     values: [databaseName],

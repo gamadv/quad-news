@@ -13,8 +13,7 @@ interface QueryProps {
   values?: any[] | undefined;
 }
 
-export async function query(props: QueryProps) {
-  const { queryTextOrConfig, values } = props;
+async function getNewClient() {
   const client = new Client({
     host: POSTGRES_HOST,
     port: POSTGRES_PORT,
@@ -24,15 +23,29 @@ export async function query(props: QueryProps) {
     ssl: isSSLEnabled,
   });
 
+  await client.connect();
+  return client;
+}
+
+async function query(props: QueryProps) {
+  const { queryTextOrConfig, values } = props;
+  let client;
+
   try {
-    await client.connect();
+    client = await getNewClient();
     const result = await client.query(queryTextOrConfig, values);
+    client.end();
     return result;
   } catch (error) {
-    await client.query("ROLLBACK");
     console.error("Error on get postgres version", error);
     throw error;
   } finally {
+    client = await getNewClient();
     await client.end();
   }
 }
+
+export default {
+  query,
+  getNewClient,
+};

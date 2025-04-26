@@ -1,4 +1,4 @@
-const isSSLEnabled = process.env.NODE_ENV !== "development";
+const isSSLEnabled = process.env.NODE_ENV === "production";
 
 const POSTGRES_HOST = String(process.env.POSTGRES_HOST);
 const POSTGRES_PORT = Number(process.env.POSTGRES_PORT);

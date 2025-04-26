@@ -1,4 +1,4 @@
-const isSSLEnabled = process.env.NODE_ENV === "production";
+const isProdEnv = process.env.NODE_ENV === "production";
 
 const POSTGRES_HOST = String(process.env.POSTGRES_HOST);
 const POSTGRES_PORT = Number(process.env.POSTGRES_PORT);
@@ -7,7 +7,7 @@ const POSTGRES_DB = String(process.env.POSTGRES_DB);
 const POSTGRES_PASSWORD = String(process.env.POSTGRES_PASSWORD);
 
 export {
-  isSSLEnabled,
+  isProdEnv,
   POSTGRES_HOST,
   POSTGRES_PORT,
   POSTGRES_USER,

@@ -5,7 +5,7 @@ import {
   POSTGRES_USER,
   POSTGRES_DB,
   POSTGRES_PASSWORD,
-  isSSLEnabled,
+  isProdEnv,
 } from "./envConfig";
 
 interface QueryProps {
@@ -20,7 +20,7 @@ async function getNewClient() {
     user: POSTGRES_USER,
     database: POSTGRES_DB,
     password: POSTGRES_PASSWORD,
-    ssl: isSSLEnabled,
+    ssl: isProdEnv,
   });
 
   await client.connect();

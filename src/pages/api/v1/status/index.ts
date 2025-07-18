@@ -8,6 +8,12 @@ export default async function Status(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
+  const allowedMethods = ["GET"];
+  if (!allowedMethods.includes(req.method!)) {
+    return res.status(405).json({
+      error: `Method "${req.method}" not allowed`,
+    });
+  }
   const currentTime = new Date().toISOString();
 
   const getPostgresVersion = await db.query({

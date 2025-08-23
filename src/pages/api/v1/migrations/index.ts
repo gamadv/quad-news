@@ -1,8 +1,8 @@
+import { isProdEnv } from "infra/envConfig";
 import { NextApiRequest, NextApiResponse } from "next";
 import migrationRunner, { RunnerOption } from "node-pg-migrate";
 import { join, resolve } from "node:path";
-import database from "src/infra/database";
-import { isProdEnv } from "src/infra/envConfig";
+import database from "infra/database";
 
 const parsePathAccordingEnv = () => {
   if (isProdEnv) {

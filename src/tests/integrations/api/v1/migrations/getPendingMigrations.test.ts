@@ -1,4 +1,4 @@
-import database from "src/infra/database";
+import database from "infra/database";
 
 beforeAll(cleanDatabase);
 

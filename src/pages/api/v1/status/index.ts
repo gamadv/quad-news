@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import db from "src/infra/database";
-import { POSTGRES_DB } from "src/infra/envConfig";
+import db from "infra/database";
+import { POSTGRES_DB } from "infra/envConfig";
 
 const databaseName = POSTGRES_DB;
 

@@ -1,3 +1,9 @@
+import orchestrator from "src/tests/orchestrator";
+
+beforeAll(async () => {
+  await orchestrator.waitForAllServices();
+});
+
 describe("Status", () => {
   const pgBaseVersion = "16.8";
 

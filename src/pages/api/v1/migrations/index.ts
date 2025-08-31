@@ -6,10 +6,10 @@ import database from "infra/database";
 
 const parsePathAccordingEnv = () => {
   if (isProdEnv) {
-    return resolve("src", "infra", "migrations");
+    return resolve("infra", "migrations");
   }
 
-  return join("src", "infra", "migrations");
+  return join("infra", "migrations");
 };
 
 export default async function migrations(
@@ -54,7 +54,7 @@ export default async function migrations(
       return response.status(200).json(migratedMigrations);
     }
   } catch (error) {
-    console.error(error);
+    console.error("migrations", error);
     throw error;
   } finally {
     if (dbClient) {

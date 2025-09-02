@@ -9,8 +9,8 @@ import {
 } from "./envConfig";
 
 interface QueryProps {
-  queryTextOrConfig: string | QueryConfig<any[]>;
-  values?: any[] | undefined;
+  queryTextOrConfig: string | QueryConfig;
+  values?: string[] | undefined;
 }
 
 async function getNewClient() {
@@ -44,8 +44,9 @@ async function query(props: QueryProps) {
     await client.end();
   }
 }
-
-export default {
+const database = {
   query,
   getNewClient,
 };
+
+export default database;

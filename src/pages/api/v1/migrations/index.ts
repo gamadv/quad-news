@@ -1,6 +1,6 @@
 import { isProdEnv } from "infra/envConfig";
 import { NextApiRequest, NextApiResponse } from "next";
-import migrationRunner, { RunnerOption } from "node-pg-migrate";
+import { runner, RunnerOption } from "node-pg-migrate";
 import { join, resolve } from "node:path";
 import database from "infra/database";
 
@@ -37,12 +37,12 @@ export default async function migrations(
     };
 
     if (request.method === "GET") {
-      const pendingMigrations = await migrationRunner(defaultMigrationOptions);
+      const pendingMigrations = await runner(defaultMigrationOptions);
       return response.status(200).json(pendingMigrations);
     }
 
     if (request.method === "POST") {
-      const migratedMigrations = await migrationRunner({
+      const migratedMigrations = await runner({
         ...defaultMigrationOptions,
         dryRun: false,
       });

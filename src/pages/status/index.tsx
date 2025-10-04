@@ -1,4 +1,4 @@
-import { SystemInfo } from "./SystemInfo";
+import { SystemInfo } from "../../components/SystemInfo";
 
 export default function StatusPage() {
   return (

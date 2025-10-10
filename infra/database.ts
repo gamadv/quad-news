@@ -7,6 +7,7 @@ import {
   POSTGRES_PASSWORD,
   isProdEnv,
 } from "./envConfig";
+import { ServiceError } from "./errors";
 
 interface QueryProps {
   queryTextOrConfig: string | QueryConfig;
@@ -37,8 +38,11 @@ async function query(props: QueryProps) {
     client.end();
     return result;
   } catch (error) {
-    console.error("Error on get postgres version", error);
-    throw error;
+    const serviceErrorObject = new ServiceError({
+      message: "Erro na conexão com Banco ou na Query.",
+      cause: error,
+    });
+    throw serviceErrorObject;
   } finally {
     await client?.end();
   }

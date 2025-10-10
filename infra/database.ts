@@ -40,8 +40,7 @@ async function query(props: QueryProps) {
     console.error("Error on get postgres version", error);
     throw error;
   } finally {
-    client = await getNewClient();
-    await client.end();
+    await client?.end();
   }
 }
 const database = {

@@ -1,4 +1,5 @@
 import useSWR from "swr";
+
 import { fetchAPI } from "../services/fetchFn";
 
 export function SystemInfo() {

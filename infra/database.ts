@@ -1,11 +1,12 @@
 import { Client, QueryConfig } from "pg";
+
 import {
+  isProdEnv,
+  POSTGRES_DB,
   POSTGRES_HOST,
+  POSTGRES_PASSWORD,
   POSTGRES_PORT,
   POSTGRES_USER,
-  POSTGRES_DB,
-  POSTGRES_PASSWORD,
-  isProdEnv,
 } from "./envConfig";
 import { ServiceError } from "./errors";
 

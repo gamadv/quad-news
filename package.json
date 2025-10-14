@@ -12,7 +12,7 @@
     "lint:prettier:check": "prettier --check .",
     "lint:prettier:fix": "prettier --write .",
     "lint:eslint:check": "next lint --dir .",
-    "lint:eslint:fix": "next lint --fix",
+    "lint:eslint:fix": "next lint --dir . --fix",
     "typecheck": "tsc --noEmit",
     "test": "npm run services:up && concurrently -n next,jest --hide next -k -s command-jest \"next dev\" \"jest --runInBand --verbose\"",
     "testwatch": "jest --watchAll --runInBand",

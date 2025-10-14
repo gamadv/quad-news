@@ -6,9 +6,14 @@
     "plugin:jest/recommended",
     "prettier"
   ],
+  "plugins": [
+    "simple-import-sort"
+  ],
   "rules": {
     "@typescript-eslint/no-explicit-any": "warn",
     "@typescript-eslint/no-require-imports": "off",
-    "@typescript-eslint/triple-slash-reference": "off"
+    "@typescript-eslint/triple-slash-reference": "off",
+    "simple-import-sort/imports": "error",
+    "simple-import-sort/exports": "error"
   }
 }

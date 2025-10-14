@@ -1,64 +1,59 @@
+import { join, resolve } from "node:path";
+
+import controller from "infra/controller";
+import database from "infra/database";
 import { isProdEnv } from "infra/envConfig";
 import { NextApiRequest, NextApiResponse } from "next";
+import { createRouter } from "next-connect";
 import { runner, RunnerOption } from "node-pg-migrate";
-import { join, resolve } from "node:path";
-import database from "infra/database";
+const nextConRouter = createRouter<NextApiRequest, NextApiResponse>();
 
-const parsePathAccordingEnv = () => {
-  if (isProdEnv) {
-    return resolve("infra", "migrations");
-  }
+nextConRouter.get(getHandler);
+nextConRouter.post(postHandler);
 
-  return join("infra", "migrations");
+export default nextConRouter.handler(controller.errorHandlers);
+
+const defaultMigrationOptions: Omit<RunnerOption, "dbClient"> = {
+  dir: isProdEnv ? resolve("infra", "migrations") : join("infra", "migrations"),
+  direction: "up",
+  verbose: true,
+  migrationsTable: "pgmigrations",
 };
 
-export default async function migrations(
-  request: NextApiRequest,
-  response: NextApiResponse,
-) {
-  const allowedMethods = ["GET", "POST"];
-  if (!allowedMethods.includes(request.method!)) {
-    return response.status(405).json({
-      error: `Method "${request.method}" not allowed`,
-    });
-  }
+async function getHandler(_: NextApiRequest, response: NextApiResponse) {
   let dbClient;
 
   try {
     dbClient = await database.getNewClient();
 
-    const defaultMigrationOptions: RunnerOption = {
-      dbClient: dbClient,
-      dryRun: true,
-      dir: parsePathAccordingEnv(),
-      direction: "up",
-      verbose: true,
-      migrationsTable: "pgmigrations",
-    };
-
-    if (request.method === "GET") {
-      const pendingMigrations = await runner(defaultMigrationOptions);
-      return response.status(200).json(pendingMigrations);
-    }
-
-    if (request.method === "POST") {
-      const migratedMigrations = await runner({
-        ...defaultMigrationOptions,
-        dryRun: false,
-      });
-
-      if (migratedMigrations.length > 0) {
-        return response.status(201).json(migratedMigrations);
-      }
-
-      return response.status(200).json(migratedMigrations);
-    }
-  } catch (error) {
-    console.error("migrations", error);
-    throw error;
+    const pendingMigrations = await runner({
+      ...defaultMigrationOptions,
+      dbClient,
+    });
+    return response.status(200).json(pendingMigrations);
   } finally {
-    if (dbClient) {
-      await dbClient.end();
+    await dbClient?.end();
+  }
+}
+
+async function postHandler(_: NextApiRequest, response: NextApiResponse) {
+  let dbClient;
+
+  try {
+    dbClient = await database.getNewClient();
+
+    const migratedMigrations = await runner({
+      ...defaultMigrationOptions,
+      dbClient,
+      dryRun: false,
+    });
+
+    if (migratedMigrations.length > 0) {
+      return response.status(201).json(migratedMigrations);
     }
+
+    return response.status(200).json(migratedMigrations);
+  } finally {
+    await dbClient?.end();
   }
 }

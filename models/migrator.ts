@@ -7,7 +7,7 @@ import { runner, RunnerOption } from "node-pg-migrate";
 const defaultMigrationOptions: Omit<RunnerOption, "dbClient"> = {
   dir: isProdEnv ? resolve("infra", "migrations") : join("infra", "migrations"),
   direction: "up",
-  verbose: true,
+  log: () => {},
   migrationsTable: "pgmigrations",
 };
 
